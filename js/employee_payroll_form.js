@@ -1,11 +1,11 @@
-function salaryInput(){
-    const salary = document.querySelector('#salary');
-    const output = document.querySelector('.salary-output');
-    output.textContent = salary.value;
-    salary.addEventListener('input', function () {
-        output.textContent = salary.value;
-    });
-}
+// function salaryInput(){
+//     const salary = document.querySelector('#salary');
+//     const output = document.querySelector('.salary-output');
+//     output.textContent = salary.value;
+//     salary.addEventListener('input', function () {
+//         output.textContent = salary.value;
+//     });
+// }
 
 class EmployeePayrollData{
     constructor(...params){
@@ -21,13 +21,13 @@ class EmployeePayrollData{
         return this._name;
     }
     set name(name){
-            this._name = name;
-            let nameRegex =RegExp('^[A-Z]{1}[a-z]{3,}$');
+        this._name = name;
+        let nameRegex =RegExp('^[A-Z]{1}[a-z]{3,}$');
         if(nameRegex.test(name))
         this._name = name;
         else {
-        alert("Name is incorrect!");
-        throw "Name is Incorrect!! "+name;
+        //alert("Name is incorrect!");
+        throw "Name is Incorrect!! ";
         }
        }
     get profile(){
@@ -117,4 +117,27 @@ function save(){
    alert("Thanks! Your form is submitted successfully!" + "\n "+employeepayrollData.toString());
    console.log("thanks for adding data!");
    console.log(employeepayrollData);
-  }
+}
+
+window.addEventListener('DOMContentLoaded',(event)=>{
+    const name=document.querySelector('#name');
+    const textError=document.querySelector('.text-error');
+    name.addEventListener('input',function(){
+        if(name.value.length==0){
+            textError.textContent="";
+            return;
+        }
+        try{
+            (new EmployeePayrollData()).name=name.value;
+            textError.textContent="";
+        }catch(e){
+            textError.textContent=e;
+        }
+    });
+    const salary = document.querySelector('#salary');
+    const output = document.querySelector('.salary-output');
+    output.textContent = salary.value;
+    salary.addEventListener('input', function () {
+        output.textContent = salary.value;
+    });
+});
