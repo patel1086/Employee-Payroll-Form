@@ -1,12 +1,3 @@
-// function salaryInput(){
-//     const salary = document.querySelector('#salary');
-//     const output = document.querySelector('.salary-output');
-//     output.textContent = salary.value;
-//     salary.addEventListener('input', function () {
-//         output.textContent = salary.value;
-//     });
-// }
-
 class EmployeePayrollData{
     constructor(...params){
         this.name = params[0];
@@ -21,13 +12,11 @@ class EmployeePayrollData{
         return this._name;
     }
     set name(name){
-        this._name = name;
-        let nameRegex =RegExp('^[A-Z]{1}[a-z]{3,}$');
+        let nameRegex =RegExp('^[A-Z]{1}[a-z]{2,}$');
         if(nameRegex.test(name))
-        this._name = name;
+            this._name = name;
         else {
-        //alert("Name is incorrect!");
-        throw "Name is Incorrect!! ";
+            throw "Name is Incorrect!! ";
         }
        }
     get profile(){
@@ -113,22 +102,35 @@ function save(){
    let startDate =new Date(year+"-"+month+"-"+day);
 
    const employeepayrollData = new EmployeePayrollData(name, salary, gender,startDate, departments, profile, note);
-
-   alert("Thanks! Your form is submitted successfully!" + "\n "+employeepayrollData.toString());
+   createAndUpdateStorage(employeepayrollData);
+   //alert("Thanks! Your form is submitted successfully!" + "\n "+employeepayrollData.toString());
    console.log("thanks for adding data!");
    console.log(employeepayrollData);
+}
+
+function createAndUpdateStorage(employeepayrollData){
+    console.log(employeepayrollData);
+    let employeePayrollList=JSON.parse(localStorage.getItem("EmployeePayrollList"));
+    if(employeePayrollList!=undefined){
+        employeePayrollList.push(employeepayrollData);
+    }else{
+        employeePayrollList=[employeepayrollData]
+    }
+    alert(employeePayrollList.toString());
+    localStorage.setItem("EmployeePayrollList",JSON.stringify(employeePayrollList));
 }
 
 window.addEventListener('DOMContentLoaded',(event)=>{
     const name=document.querySelector('#name');
     const textError=document.querySelector('.text-error');
     name.addEventListener('input',function(){
-        if(name.value.length==0){
-            textError.textContent="";
+        let nameRegex = RegExp('^[A-Z]{1}[a-zA-z\\s]{2,}$');
+        if (name.value.length == 0 || nameRegex.test(name.value)) {
+            textError.textContent = "";
             return;
         }
         try{
-            (new EmployeePayrollData()).name=name.value;
+            (new EmployeePayrollData()).name=name.value;;
             textError.textContent="";
         }catch(e){
             textError.textContent=e;
@@ -141,3 +143,22 @@ window.addEventListener('DOMContentLoaded',(event)=>{
         output.textContent = salary.value;
     });
 });
+
+// const save=()=>{
+//     try{
+//         let employeepayrollData=createEmployeePayroll();
+//     }catch(e){
+//         return;
+//     }
+// }
+// const createEmployeePayroll=()=>{
+//     let employeepayrollData=new EmployeePayrollData();
+//     try{
+//         employeepayrollData.name=getInputValueById('#name');
+//     }catch(e){
+//         setTextValue('.text-error',e);
+//         throw e;
+//     }
+//     employeepayrollData.profile=getSelectedValues('[name=profile]').pop();
+
+// }
