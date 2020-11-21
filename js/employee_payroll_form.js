@@ -1,13 +1,4 @@
 class EmployeePayrollData{
-    constructor(...params){
-        this.name = params[0];
-        this.salary = params[1];
-        this.gender=params[2];
-        this.startDate = params[3];
-        this.department = params[4];
-        this.profile = params[5];
-        this.notes = params[6];
-    }
     get name(){
         return this._name;
     }
@@ -72,52 +63,57 @@ class EmployeePayrollData{
     }
 }
 function save(){
-    var name= document.getElementById("name").value;
+    let employeepayrollData=new EmployeePayrollData();
+    employeepayrollData.name= document.getElementById("name").value;
 
     const images = document.getElementsByName("profile");
-    let profile=images[0];
+    employeepayrollData.profile=images[0];
     for(let i=0;i<images.length;i++){
         if(images[i].checked)
-            profile=images[i].value;
+        employeepayrollData.profile=images[i].value;
     }
 
     let genders = document.getElementsByName("gender");
     for(let i=0;i<genders.length;i++){
         if(genders[i].checked)
-            gender=genders[i].value;
+        employeepayrollData.gender=genders[i].value;
     }
 
-    let departments = new Array();
+    employeepayrollData.departments = new Array();
     const departmentsForm = document.getElementsByClassName("checkbox");
     for(let i=0;i<departmentsForm.length;i++){
         if(departmentsForm[i].checked)
-            departments.push(departmentsForm[i].value);
+        employeepayrollData.departments.push(departmentsForm[i].value);
     }
 
-   const salary = document.getElementById("salary").value;
+   employeepayrollData.salary = document.getElementById("salary").value;
    const day = document.getElementById("day").value;
    const month = document.getElementById("month").value;
    const year = document.getElementById("year").value;
-   var note = document.getElementById("notes").value;
-   let startDate =new Date(year+"-"+month+"-"+day);
+   employeepayrollData.note = document.getElementById("notes").value;
+   employeepayrollData.startDate =new Date(year+"-"+month+"-"+day);
 
-   const employeepayrollData = new EmployeePayrollData(name, salary, gender,startDate, departments, profile, note);
+
+   //const employeepayrollData = new EmployeePayrollData(name, salary, gender,startDate, departments, profile, note);
    createAndUpdateStorage(employeepayrollData);
-   //alert("Thanks! Your form is submitted successfully!" + "\n "+employeepayrollData.toString());
+   alert("Thanks! Your form is submitted successfully!" + "\n "+employeepayrollData.toString());
    console.log("thanks for adding data!");
-   console.log(employeepayrollData);
+   console.log("3"+employeepayrollData);
 }
 
 function createAndUpdateStorage(employeepayrollData){
-    console.log(employeepayrollData);
+    console.log("1"+employeepayrollData);
     let employeePayrollList=JSON.parse(localStorage.getItem("EmployeePayrollList"));
     if(employeePayrollList!=undefined){
         employeePayrollList.push(employeepayrollData);
     }else{
         employeePayrollList=[employeepayrollData]
     }
-    alert(employeePayrollList.toString());
+    //alert(employeePayrollList.toString());
+    console.log("2"+employeePayrollList.toString())
+    //console.log("7"+employeePayrollList);
     localStorage.setItem("EmployeePayrollList",JSON.stringify(employeePayrollList));
+    //console.log(JSON.parse(window.localStorage.getItem('Jitendra')));
 }
 
 const resetForm= () => {
@@ -150,13 +146,12 @@ window.addEventListener('DOMContentLoaded',(event)=>{
     const name=document.querySelector('#name');
     const textError=document.querySelector('.text-error');
     name.addEventListener('input',function(){
-        let nameRegex = RegExp('^[A-Z]{1}[a-zA-z\\s]{2,}$');
-        if (name.value.length == 0 || nameRegex.test(name.value)) {
+        if ( name.value.length == 0) {
             textError.textContent = "";
             return;
         }
         try{
-            (new EmployeePayrollData()).name=name.value;;
+            (new EmployeePayrollData()).name=name.value;
             textError.textContent="";
         }catch(e){
             textError.textContent=e;
