@@ -1,20 +1,29 @@
+let empPayrollList=[];
 window.addEventListener("DOMContentLoaded", (event) => {
+    empPayrollList=getEmployeePayrollDataFromStorage();
+    document.querySelector(".emp-count").textContent=empPayrollList.length;
     createInnerHtml();
+    localStorage.clear();
   });
+
+  const getEmployeePayrollDataFromStorage=()=>{
+    return localStorage.getItem("EmployeePayrollList") ? JSON.parse(localStorage.getItem("EmployeePayrollList")) : [];
+  }
   
   const createInnerHtml = () => {
+     // if(empPayrollList.length==0) return;
     const headerHtml ="<tr><th></th><th>Name</th><th>Gender</th><th>Department</th><th>Salary</th><th>Start Day</th><th>Actions</th></tr>";
     let innerHtml = `${headerHtml}`;
   let empList = createEmployeePayrollJSON();
-  for (let emp of empList) {
+  for (let emp of empPayrollList) {
     innerHtml = `${innerHtml}  
       <tr>
       <td>
-        <img src="${emp._profilePic}" alt="P" class="profile">
+        <img src="${emp._profile}" alt="P" class="profile">
       </td>
       <td>${emp._name}</td>
       <td>${emp._gender}</td>
-      <td>${getDeptHtml(emp._department)}</td>
+      <td>${getDeptHtml(emp.departments)}</td>
       <td>${emp._salary}</td>
       <td>${emp._startDate}</td>
       <td>
@@ -25,13 +34,13 @@ window.addEventListener("DOMContentLoaded", (event) => {
       `;
   }
     document.querySelector("#table-display").innerHTML = innerHtml;
-  };
+  }
 
   const createEmployeePayrollJSON = () => {
     let employeePayrollListLocal = [
       {
         _name: "Akram Shaheed",
-        _profilePic: "../assets/profile_images/Ellipse -5.png",
+        _profile: "../assets/profile_images/Ellipse -5.png",
         _gender: "Male",
         _department: ["Others"],
         _salary: "40000",
@@ -40,7 +49,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
       },
       {
         _name: "Xavier Chettan",
-        _profilePic: "../assets/profile_images/Ellipse -2.png",
+        _profile: "../assets/profile_images/Ellipse -2.png",
         _gender: "Male",
         _department: ["HR", "Others"],
         _salary: "100000",
@@ -48,8 +57,8 @@ window.addEventListener("DOMContentLoaded", (event) => {
         _startDate: "01 Jan 2018",
       },
       {
-        _name: "Jitendra",
-        _profilePic: "../assets/profile_images/Ellipse -2.png",
+        _name: "Jitendra Patel",
+        _profile: "../assets/profile_images/Ellipse -2.png",
         _gender: "Male",
         _department: ["Others"],
         _salary: "40000",

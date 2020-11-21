@@ -107,13 +107,13 @@ function createAndUpdateStorage(employeepayrollData){
     if(employeePayrollList!=undefined){
         employeePayrollList.push(employeepayrollData);
     }else{
-        employeePayrollList=[employeepayrollData]
+        employeePayrollList=[employeepayrollData];
     }
     //alert(employeePayrollList.toString());
     console.log("2"+employeePayrollList.toString())
     //console.log("7"+employeePayrollList);
     localStorage.setItem("EmployeePayrollList",JSON.stringify(employeePayrollList));
-    //console.log(JSON.parse(window.localStorage.getItem('Jitendra')));
+    console.log("Radhe-Radhe"+localStorage.getItem('EmployeePayrollList'));
 }
 
 const resetForm= () => {
