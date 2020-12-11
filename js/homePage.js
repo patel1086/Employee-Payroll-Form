@@ -3,7 +3,8 @@ window.addEventListener("DOMContentLoaded", (event) => {
     empPayrollList=getEmployeePayrollDataFromStorage();
     document.querySelector(".emp-count").textContent=empPayrollList.length;
     createInnerHtml();
-    localStorage.clear();
+    localStorage.removeItem('editEmp');
+    //localStorage.clear();
   });
 
   const getEmployeePayrollDataFromStorage=()=>{
@@ -23,12 +24,12 @@ window.addEventListener("DOMContentLoaded", (event) => {
       </td>
       <td>${emp._name}</td>
       <td>${emp._gender}</td>
-      <td>${getDeptHtml(emp.departments)}</td>
+      <td>${getDeptHtml(emp._department)}</td>
       <td>${emp._salary}</td>
       <td>${emp._startDate}</td>
       <td>
-      <img id="1" onclick="remove(this)" src="../assets/icons/delete-black-18dp.svg" alt="Delete">
-      <img id="1" onclick="update(this)" src="../assets/icons/create-black-18dp.svg" alt="Edit">
+      <img id="${emp._id }" onclick="remove(this)" src="../assets/icons/delete-black-18dp.svg" alt="Delete">
+      <img id="${emp._id }" onclick="update(this)" src="../assets/icons/create-black-18dp.svg" alt="Edit">
       </td>
       </tr>
       `;
@@ -75,3 +76,26 @@ window.addEventListener("DOMContentLoaded", (event) => {
       deptHtml = `${deptHtml}<div class="dept-label">${dept}</div>`;
     return deptHtml;
   };
+
+  const remove = (node) => {
+    let empData = empPayrollList.find((emp) => emp._id == node.id);
+    if (!empData) return;
+    const index = empPayrollList.map((emp) => emp._id).indexOf(empData._id);
+    empPayrollList.splice(index, 1);
+
+    localStorage.setItem("EmployeePayrollList", JSON.stringify(empPayrollList));
+    document.querySelector(".emp-count").textContent = empPayrollList.length;
+    createInnerHtml();
+  };
+  
+  const update = (node) => {
+    let empData = empPayrollList.find((emp) => emp._id == node.id);
+    if (!empData) return;
+    localStorage.setItem("editEmp", JSON.stringify(empData));
+    window.location.href="../pages/emp_Payroll_form.html";
+    isUpdate = true;
+    //window.location.href = site_properties.add_employee_page;
+    //window.location.replace(site_properties.add_employee_page);
+   // window.location.replace(site_properties.add_employee_page);
+  };
+  
